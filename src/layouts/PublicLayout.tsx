@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { useCategories, useProductDirectory, useStores } from '../api/queries'
+import { useCategories, useProductDirectory } from '../api/queries'
 import { MegaMenu } from '../components/MegaMenu'
 import { SearchBox } from '../components/SearchBox'
 import { Button } from '../components/ui'
@@ -14,11 +14,11 @@ export interface PublicContext {
 
 /** Layout của trang công khai: header + mega menu danh mục + tìm kiếm + chọn cửa hàng. */
 export function PublicLayout() {
+  useEffect(() => { document.title = 'Food SG — Món ngon mỗi ngày' }, [])
   const [storeId, setStoreId] = useState<number | ''>('')
   const location = useLocation()
 
   const categories = useCategories()
-  const stores = useStores()
   const directory = useProductDirectory()
 
   const productsByCategory = useMemo(() => {
@@ -76,7 +76,7 @@ export function PublicLayout() {
 
       <footer className="mt-16 border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Food SG — Món ngon mỗi ngày.</p>
+          <p>© {new Date().getFullYear()} httuan — Food SG · Món ngon mỗi ngày.</p>
           <Link to="/pages/gioi-thieu" className="hover:text-emerald-600 hover:underline">Bài giới thiệu</Link>
           <p>Cổng thông tin công khai · Quản trị tại /admin</p>
         </div>

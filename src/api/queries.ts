@@ -186,8 +186,9 @@ export async function getGuestCategory(slug: string) {
 }
 
 export async function getGuestPage(slug: string) {
-  const response = await apiRequest<DataResponse<Page>>(`/pages/${slug}`, { auth: false })
-  return response.data
+  // BE trả thẳng Page (không bọc `data`) cho `/pages/{slug}`.
+  const response = await apiRequest<DataResponse<Page> | Page>(`/pages/${slug}`, { auth: false })
+  return 'data' in response ? response.data : response
 }
 
 export async function searchGuest(query: string) {

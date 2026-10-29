@@ -1,8 +1,6 @@
 import type { FieldPath, FieldValues, UseFormSetError } from 'react-hook-form'
 
 const API_URL = (import.meta.env.VITE_API_URL ?? '/api').replace(/\/+$/, '')
-const TOKEN_KEY = import.meta.env.VITE_TOKEN_KEY ?? 'food-sg-admin-token'
-/** Nơi BE mount ảnh storage (`Storage::url` trả đường dẫn tương đối "/storage/…"). */
 const STORAGE_HOST = (import.meta.env.VITE_STORAGE_HOST ?? 'http://localhost:8000').replace(/\/+$/, '')
 
 export class ApiError extends Error {
@@ -16,13 +14,6 @@ export class ApiError extends Error {
   }
 }
 
-export const token = {
-  get: () => localStorage.getItem(TOKEN_KEY),
-  set: (value: string) => localStorage.setItem(TOKEN_KEY, value),
-  clear: () => localStorage.removeItem(TOKEN_KEY),
-}
-
-/** Bắn khi token hết hạn / bị thu hồi để AuthProvider đăng xuất người dùng. */
 export const UNAUTHORIZED_EVENT = 'food-sg:unauthorized'
 
 export function emitUnauthorized() {
@@ -48,11 +39,11 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   const headers: Record<string, string> = { Accept: 'application/json' }
   // FormData tự sinh Content-Type với boundary — không được override bằng tay.
   if (body !== undefined && !isFormData) headers['Content-Type'] = 'application/json'
-  if (auth && token.get()) headers.Authorization = `Bearer ${token.get()}`
 
   const response = await fetch(url.toString(), {
     method,
     headers,
+    credentials: 'same-origin',
     body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
   })
 
@@ -61,7 +52,6 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
 
   if (!response.ok) {
     if (response.status === 401 && auth) {
-      token.clear()
       emitUnauthorized()
     }
     throw new ApiError(

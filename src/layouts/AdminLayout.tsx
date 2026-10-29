@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/context'
 import { Button } from '../components/ui'
@@ -29,6 +30,7 @@ const staffLinks: NavItem[] = [
 const workerLinks: NavItem[] = [{ to: '/admin/profile', label: 'Hồ sơ' }]
 
 export function AdminLayout() {
+  useEffect(() => { document.title = 'Food SG Admin' }, [])
   const { user, signOut, isAdmin, canReadStock } = useAuth()
   const navigate = useNavigate()
 

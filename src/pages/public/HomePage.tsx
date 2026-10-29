@@ -40,7 +40,7 @@ export function HomePage() {
   const bannerList = useMemo(() => {
     const d = banners.data
     if (!d || !Array.isArray(d)) return []
-    return (d as any[]).sort((a: any, b: any) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
+    return (d as { id: number; image: string; title?: string; link_url?: string; sort_order: number }[]).sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
   }, [banners.data])
   useEffect(() => {
     if (bannerList.length <= 1) return
@@ -54,10 +54,10 @@ export function HomePage() {
         <section className="w-full">
           <div className="relative overflow-hidden shadow-lg h-[28rem] md:h-[32rem]">
             <a href={String(bannerList[bannerIndex]?.link_url ?? '#')} className="block h-full w-full">
-              <img key={bannerIndex} src={imageUrl(bannerList[bannerIndex]?.image)} alt={String(bannerList[bannerIndex]?.title ?? 'Banner')} className="h-full w-full object-cover transition-opacity duration-700 ease-in-out" />
+              <img key={bannerIndex} src={imageUrl(bannerList[bannerIndex]?.image) ?? undefined} alt={String(bannerList[bannerIndex]?.title ?? 'Banner')} className="h-full w-full object-cover transition-opacity duration-700 ease-in-out" />
             </a>
             <div className="absolute bottom-4 left-4 flex gap-2">
-              {bannerList.map((_: any, idx: number) => (
+              {bannerList.map((_, idx: number) => (
                 <button key={idx} onClick={() => setBannerIndex(idx)} aria-label={`Slide ${idx + 1}`} className={`h-2.5 rounded-full transition-all ${idx === bannerIndex ? 'w-8 bg-white' : 'w-2.5 bg-white/60'} `} />
               ))}
             </div>

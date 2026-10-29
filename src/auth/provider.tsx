@@ -3,24 +3,21 @@ import type { ReactNode } from 'react'
 import { loginRequest, logoutRequest, meRequest } from '../api/queries'
 import { AuthContext } from './context'
 import type { AuthValue } from './context'
-import { token, UNAUTHORIZED_EVENT } from '../lib/client'
+import { UNAUTHORIZED_EVENT } from '../lib/client'
 import { STAFF_ROLE_SLUGS } from '../api/types'
 import type { RoleSlug, User } from '../api/types'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(() => Boolean(token.get()))
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!token.get()) return
-
     let active = true
 
     meRequest()
       .then((current) => active && setUser(current))
       .catch(() => {
         if (!active) return
-        token.clear()
         setUser(null)
       })
       .finally(() => active && setLoading(false))
@@ -33,7 +30,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Token hết hạn (401) => buộc đăng xuất, không giữ màn hình "đã đăng nhập".
   useEffect(() => {
     const onUnauthorized = () => {
-      token.clear()
       setUser(null)
       setLoading(false)
     }
@@ -57,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       storeId: user?.staff?.store_id ?? null,
       signIn: async (email, password) => {
         const response = await loginRequest(email, password)
-        token.set(response.token)
         setUser(response.user)
       },
       signOut: async () => {
@@ -66,7 +61,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch {
           // token hết hạn hoặc mạng lỗi — vẫn đăng xuất phía client
         }
-        token.clear()
         setUser(null)
       },
     }
