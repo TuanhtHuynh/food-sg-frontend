@@ -54,10 +54,11 @@ export function TextAreaField<T extends FieldValues>({
   name,
   label,
   error,
-}: FieldProps<T>) {
+  rows = 3,
+}: FieldProps<T> & { rows?: number }) {
   return (
     <Field label={label} error={error}>
-      <textarea {...register(name)} rows={3} className={inputClass} />
+      <textarea {...register(name)} rows={rows} className={inputClass} />
     </Field>
   )
 }

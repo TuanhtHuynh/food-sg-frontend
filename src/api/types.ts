@@ -159,7 +159,7 @@ export interface DataResponse<T> {
 
 export interface Banner {
   id: number
-  image: string
+  image: string | null
   title?: string
   link_url?: string
   sort_order: number

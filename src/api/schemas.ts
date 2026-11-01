@@ -75,6 +75,7 @@ export const bannerSchema = z.object({
   title: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
   link_url: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
   sort_order: z.string().refine((value) => /^\d+$/.test(value), 'Thứ tự phải là số'),
+  image: z.any().optional(),
 })
 
 export type BannerValues = z.infer<typeof bannerSchema>

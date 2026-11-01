@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus, Save, Trash2, X, Upload } from 'lucide-react'
+import { Plus, Save, X } from 'lucide-react'
 import { useCreate, useDelete, useList, useUpdate } from '../../api/queries'
 import { ResourceTable } from '../../components/ResourceTable'
 import type { Column } from '../../components/DataTable'
@@ -54,7 +54,7 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
       }
       onClose()
     } catch (err) {
-      if (!mapServerErrors(err, setFieldError, ['title', 'link_url', 'sort_order', 'image'])) setError(errorMessage(err))
+      if (!mapServerErrors(err, setFieldError, ['title', 'link_url', 'sort_order'])) setError(errorMessage(err))
     }
   }
 
@@ -79,7 +79,7 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField register={register} name="title" label="Tiêu đề" error={errors.title?.message} />
         <TextField register={register} name="link_url" label="Link đích" placeholder="https://..." error={errors.link_url?.message} />
-        <TextField register={register} name="sort_order" label="Thứ tự" type="number" defaultValue="0" error={errors.sort_order?.message} />
+        <TextField register={register} name="sort_order" label="Thứ tự" type="number" placeholder="0" error={errors.sort_order?.message} />
 
         <label className="flex flex-col gap-1">
           <span className="text-sm font-medium text-slate-700">Ảnh banner (jpg/png/webp, ≤ 2MB)</span>
@@ -119,7 +119,7 @@ export function BannersPage() {
       header: 'Ảnh',
       cell: (row) => (
         row.image ? (
-          <img src={imageUrl(row.image)} alt={row.title ?? ''} className="h-12 w-24 rounded-md border border-slate-200 object-cover" />
+          <img src={imageUrl(row.image) ?? ''} alt={row.title ?? ''} className="h-12 w-24 rounded-md border border-slate-200 object-cover" />
         ) : <span className="text-xs text-slate-400">—</span>
       ),
     },
