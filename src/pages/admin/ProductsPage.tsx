@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -45,6 +45,7 @@ const FIELDS = [
   'meta_title',
   'meta_description',
   'meta_keyword',
+  'image',
 ] as const
 
 /** Đáp ứng BE: image là FILE upload (jpg/jpeg/png/webp, ≤ 2048KB), các field còn lại bắt buộc như JSON. */
@@ -78,11 +79,13 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
   const updateWithImage = useUpdateProductWithImage()
   const [error, setError] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const {
     register,
     handleSubmit,
     setError: setFieldError,
+    watch: watchForm,
     formState: { errors },
   } = useForm<ProductValues>({
     resolver: zodResolver(productSchema),
@@ -100,11 +103,33 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
     },
   })
 
+  const watchedImage = (watchForm('image' as never) as unknown) as File | null
+
+  // Cập nhật preview URL khi người dùng chọn file mới hoặc khi product thay đổi
+  useEffect(() => {
+    if (watchedImage instanceof File) {
+      const url = URL.createObjectURL(watchedImage)
+      setPreviewUrl(url)
+      return () => URL.revokeObjectURL(url)
+    }
+    setPreviewUrl(product?.image ? imageUrl(product.image) : null)
+  }, [watchedImage, product])
+
   const pending =
     create.isPending ||
     update.isPending ||
     createWithImage.isPending ||
     updateWithImage.isPending
+
+  // Cập nhật preview URL khi người dùng chọn file mới hoặc khi product thay đổi
+  useEffect(() => {
+    if (watchedImage instanceof File) {
+      const url = URL.createObjectURL(watchedImage)
+      setPreviewUrl(url)
+      return () => URL.revokeObjectURL(url)
+    }
+    setPreviewUrl(product?.image ? imageUrl(product.image) : null)
+  }, [watchedImage, product])
 
   const onSubmit = async (values: ProductValues) => {
     setError('')
@@ -146,8 +171,6 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
     }
   }
 
-  const previewUrl = imageUrl(product?.image)
-
   return (
     <Modal
       open
@@ -180,7 +203,11 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp"
-            onChange={(event) => setImageFile(event.target.files?.[0] ?? null)}
+            {...register('image')}
+            onChange={(event) => {
+              register('image').onChange(event)
+              setImageFile(event.target.files?.[0] ?? null)
+            }}
             className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-500"
           />
           <span className="text-xs text-slate-400">

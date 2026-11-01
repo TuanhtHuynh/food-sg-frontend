@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus, Save, X } from 'lucide-react'
 import { useCreate, useDelete, useList, useUpdate } from '../../api/queries'
+import { updateBannerWithImage } from '../../api/queries'
 import { ResourceTable } from '../../components/ResourceTable'
 import type { Column } from '../../components/DataTable'
 import { TextField } from '../../components/form'
@@ -35,15 +36,11 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    setPreviewUrl(banner?.image ? imageUrl(banner.image) : null)
-    setImageFile(null)
-  }, [banner])
-
   const {
     register,
     handleSubmit,
     setError: setFieldError,
+    watch: watchForm,
     formState: { errors, isSubmitting },
   } = useForm<BannerValues>({
     resolver: zodResolver(bannerSchema),
@@ -54,12 +51,35 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
     },
   })
 
+  const watchedImage = (watchForm('image' as never) as unknown) as File | null
+  useEffect(() => {
+    if (watchedImage instanceof File) {
+      const url = URL.createObjectURL(watchedImage)
+      setPreviewUrl(url)
+      return () => URL.revokeObjectURL(url)
+    }
+    setPreviewUrl(banner?.image ? imageUrl(banner.image) : null)
+  }, [watchedImage, banner])
+
   const onSubmit = async (values: BannerValues) => {
     setError('')
+    const hasImage = Boolean(imageFile)
     const formData = buildBannerForm(values, imageFile, Boolean(banner))
     try {
-      if (banner) await update.mutateAsync({ id: banner.id, payload: formData })
-      else await create.mutateAsync(formData)
+      if (banner) {
+        if (hasImage) {
+          // Banner update với ảnh: gửi POST + _method=PUT (PHP không parse multipart PUT)
+          await updateBannerWithImage(banner.id, formData)
+        } else {
+          await update.mutateAsync({ id: banner.id, payload: {
+            title: values.title || null,
+            link_url: values.link_url || null,
+            sort_order: Number(values.sort_order || 0),
+          }})
+        }
+      } else {
+        await create.mutateAsync(formData)
+      }
       onClose()
     } catch (err) {
       if (!mapServerErrors(err, setFieldError, ['title', 'link_url', 'sort_order'])) setError(errorMessage(err))
@@ -92,7 +112,11 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
           <input
             type="file"
             accept="image/png,image/jpeg,image/webp"
-            onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
+            {...register('image')}
+            onChange={(e) => {
+              register('image').onChange(e)
+              setImageFile(e.target.files?.[0] ?? null)
+            }}
             className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-500"
           />
           <span className="text-xs text-slate-400">

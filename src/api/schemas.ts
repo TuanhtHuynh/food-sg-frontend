@@ -25,6 +25,7 @@ export const productSchema = z
     meta_title: z.string().trim().max(255, 'Tối đa 255 ký tự'),
     meta_description: z.string().trim().max(1000, 'Tối đa 1000 ký tự'),
     meta_keyword: z.string().trim().max(255, 'Tối đa 255 ký tự'),
+    image: z.any().optional(),
   })
   .refine(
     (values) =>

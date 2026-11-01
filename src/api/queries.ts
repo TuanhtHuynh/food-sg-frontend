@@ -2,6 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { apiRequest } from '../lib/client'
 import type {
   AuthResponse,
+  Banner,
   Category,
   ClockEntry,
   DataResponse,
@@ -90,6 +91,14 @@ export async function updateResource<T>(resource: Resource, id: number, payload:
 
 export async function deleteResource(resource: Resource, id: number) {
   return apiRequest<{ message: string }>(`/admin/${resource}/${id}`, { method: 'DELETE' })
+}
+
+/** Sửa banner kèm ảnh — multipart qua POST + `_method=PUT` (PHP không parse multipart PUT). */
+export async function updateBannerWithImage(id: number, formData: FormData) {
+  return apiRequest<DataResponse<Banner>>(`/admin/banners/${id}`, {
+    method: 'POST',
+    body: formData,
+  })
 }
 
 /** Khôi phục sản phẩm đã xoá mềm (kèm staff + user liên quan). */
