@@ -114,7 +114,7 @@ function SimpleForm({
   )
 }
 
-function SimplePage({ config }: { config: Config }) {
+export function SimplePage({ config }: { config: Config }) {
   const [page, setPage] = useState(0)
   const [editing, setEditing] = useState<Row | null>(null)
   const [formOpen, setFormOpen] = useState(false)
