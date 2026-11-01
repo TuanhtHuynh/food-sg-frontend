@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus, Save, X } from 'lucide-react'
@@ -32,7 +32,13 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
   const create = useCreate<Banner>('banners')
   const update = useUpdate<Banner>('banners')
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    setPreviewUrl(banner?.image ? imageUrl(banner.image) : null)
+    setImageFile(null)
+  }, [banner])
 
   const {
     register,
@@ -59,8 +65,6 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
       if (!mapServerErrors(err, setFieldError, ['title', 'link_url', 'sort_order'])) setError(errorMessage(err))
     }
   }
-
-  const previewUrl = banner?.image ? imageUrl(banner.image) : null
 
   return (
     <Modal
@@ -162,7 +166,7 @@ export function BannersPage() {
         emptyText="Không có banner nào"
       />
 
-      {formOpen ? <BannerForm banner={editing} onClose={() => setFormOpen(false)} /> : null}
+      {formOpen ? <BannerForm key={editing?.id ?? 'new'} banner={editing} onClose={() => setFormOpen(false)} /> : null}
     </div>
   )
 }
