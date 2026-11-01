@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { loginRequest, logoutRequest, meRequest } from '../api/queries'
 import { AuthContext } from './context'
 import type { AuthValue } from './context'
-import { UNAUTHORIZED_EVENT } from '../lib/client'
+import { UNAUTHORIZED_EVENT, setToken, clearToken } from '../lib/client'
 import { STAFF_ROLE_SLUGS } from '../api/types'
 import type { RoleSlug, User } from '../api/types'
 
@@ -32,6 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const onUnauthorized = () => {
       setUser(null)
       setLoading(false)
+      clearToken()
     }
 
     window.addEventListener(UNAUTHORIZED_EVENT, onUnauthorized)
@@ -53,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       storeId: user?.staff?.store_id ?? null,
       signIn: async (email, password) => {
         const response = await loginRequest(email, password)
+        setToken(response.token)
         setUser(response.user)
       },
       signOut: async () => {
@@ -62,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // token hết hạn hoặc mạng lỗi — vẫn đăng xuất phía client
         }
         setUser(null)
+        clearToken()
       },
     }
   }, [user, loading])

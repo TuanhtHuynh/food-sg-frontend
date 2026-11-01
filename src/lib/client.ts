@@ -27,6 +27,32 @@ interface RequestOptions {
   auth?: boolean
 }
 
+const TOKEN_KEY = import.meta.env.VITE_TOKEN_KEY ?? 'food-sg-admin-token'
+
+export function getToken(): string | null {
+  try {
+    return localStorage.getItem(TOKEN_KEY)
+  } catch {
+    return null
+  }
+}
+
+export function setToken(token: string): void {
+  try {
+    localStorage.setItem(TOKEN_KEY, token)
+  } catch {
+    // ignore
+  }
+}
+
+export function clearToken(): void {
+  try {
+    localStorage.removeItem(TOKEN_KEY)
+  } catch {
+    // ignore
+  }
+}
+
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, params, auth = true } = options
   const isFormData = body instanceof FormData
@@ -37,13 +63,17 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   }
 
   const headers: Record<string, string> = { Accept: 'application/json' }
+  // Token JWT từ localStorage; cookie chỉ dùng cho session không phải auth.
+  if (auth) {
+    const token = getToken()
+    if (token) headers['Authorization'] = `Bearer ${token}`
+  }
   // FormData tự sinh Content-Type với boundary — không được override bằng tay.
   if (body !== undefined && !isFormData) headers['Content-Type'] = 'application/json'
 
   const response = await fetch(url.toString(), {
     method,
     headers,
-    credentials: 'same-origin',
     body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
   })
 
