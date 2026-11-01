@@ -258,7 +258,7 @@ export async function deleteStock(id: number) {
 
 export function useList<T>(resource: Resource, params: ListParams = {}) {
   return useQuery({
-    queryKey: ['admin', resource, params],
+    queryKey: ['admin', resource, 'list', params],
     queryFn: () => listResource<T>(resource, params),
     placeholderData: keepPreviousData,
   })
@@ -294,7 +294,7 @@ export function useProductDirectory() {
 
 export function useGuestProducts(params: GuestProductParams = {}) {
   return useQuery({
-    queryKey: ['guest', 'products', params],
+    queryKey: ['products', 'list', params],
     queryFn: () => listGuestProducts(params),
     placeholderData: keepPreviousData,
   })
@@ -345,6 +345,8 @@ function useInvalidate() {
   const queryClient = useQueryClient()
   return () => {
     queryClient.invalidateQueries({ queryKey: ['admin'], exact: false })
+    queryClient.invalidateQueries({ queryKey: ['products'], exact: false })
+    queryClient.invalidateQueries({ queryKey: ['banners'], exact: false })
     // Danh mục sản phẩm (dùng để tra tên trong module kho) cũng cần được làm mới.
     queryClient.invalidateQueries({ queryKey: ['directory'] })
   }
