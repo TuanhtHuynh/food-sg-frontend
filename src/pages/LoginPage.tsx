@@ -6,6 +6,7 @@ import { useAuth } from '../auth/context'
 import { errorMessage } from '../lib/client'
 import { loginSchema } from '../api/schemas'
 import type { LoginValues } from '../api/schemas'
+import { LogIn } from 'lucide-react'
 import { Button, Field, inputClass } from '../components/ui'
 
 export function LoginPage() {
@@ -67,7 +68,8 @@ export function LoginPage() {
 
         {error ? <p className="text-sm text-rose-600">{error}</p> : null}
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+          <LogIn size={18} />
           {isSubmitting ? 'Đang đăng nhập…' : 'Đăng nhập'}
         </Button>
       </form>

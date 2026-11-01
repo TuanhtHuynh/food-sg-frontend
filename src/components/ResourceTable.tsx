@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 import { DataTable } from './DataTable'
 import type { Column } from './DataTable'
+import { Pencil, Trash2 } from 'lucide-react'
 import { Button, ConfirmDialog, inputClass } from './ui'
 import { errorMessage } from '../lib/client'
 
@@ -62,14 +63,14 @@ export function ResourceTable<T>({
               cell: (row: T) => (
                 <div className="flex justify-end gap-2">
                   {onEdit ? (
-                    <Button variant="secondary" onClick={() => onEdit(row)}>
-                      Sửa
-                    </Button>
+                  <Button variant="secondary" onClick={() => onEdit(row)} className="gap-1.5">
+                    <Pencil size={14} /> Sửa
+                  </Button>
                   ) : null}
                   {onDelete ? (
-                    <Button variant="danger" onClick={() => setDeleting(row)}>
-                      Xóa
-                    </Button>
+                  <Button variant="danger" onClick={() => setDeleting(row)} className="gap-1.5">
+                    <Trash2 size={14} /> Xóa
+                  </Button>
                   ) : null}
                 </div>
               ),

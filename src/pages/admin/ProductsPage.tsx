@@ -15,6 +15,7 @@ import {
 } from '../../api/queries'
 import { ResourceTable } from '../../components/ResourceTable'
 import type { Column } from '../../components/DataTable'
+import { Plus, Trash2, X, Save, RotateCcw, Trash } from 'lucide-react'
 import { ProductThumb } from '../../components/ProductThumb'
 import { TextAreaField, TextField } from '../../components/form'
 import { Button, Modal } from '../../components/ui'
@@ -154,11 +155,11 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
       onClose={onClose}
       footer={
         <>
-          <Button variant="secondary" onClick={onClose} disabled={pending}>
-            Hủy
+          <Button variant="secondary" onClick={onClose} disabled={pending} className="gap-1.5">
+            <X size={16} /> Hủy
           </Button>
-          <Button onClick={handleSubmit(onSubmit)} disabled={pending}>
-            {pending ? 'Đang lưu…' : 'Lưu'}
+          <Button onClick={handleSubmit(onSubmit)} disabled={pending} className="gap-1.5">
+            <Save size={16} /> {pending ? 'Đang lưu…' : 'Lưu'}
           </Button>
         </>
       }
@@ -319,21 +320,23 @@ function TrashDialog({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       footer={
         <>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" onClick={onClose} className="gap-1.5">
             Đóng
           </Button>
           <Button
             variant="danger"
             disabled={!Number.isInteger(id) || id <= 0 || restore.isPending || forceDelete.isPending}
             onClick={() => setConfirming(true)}
+            className="gap-1.5"
           >
-            Xóa vĩnh viễn
+            <Trash size={14} /> Xóa vĩnh viễn
           </Button>
           <Button
             disabled={!Number.isInteger(id) || id <= 0 || restore.isPending || forceDelete.isPending}
             onClick={() => run('restore')}
+            className="gap-1.5"
           >
-            Khôi phục
+            <RotateCcw size={14} /> Khôi phục
           </Button>
         </>
       }
@@ -361,11 +364,11 @@ function TrashDialog({ onClose }: { onClose: () => void }) {
               Xóa vĩnh viễn sản phẩm #{id}? Bản ghi sẽ bị xóa cứng khỏi cơ sở dữ liệu.
             </p>
             <div className="mt-2 flex justify-end gap-2">
-              <Button variant="secondary" onClick={() => setConfirming(false)}>
-                Huỷ
+              <Button variant="secondary" onClick={() => setConfirming(false)} className="gap-1.5">
+                <X size={14} /> Huỷ
               </Button>
-              <Button variant="danger" onClick={() => run('force')}>
-                Xóa vĩnh viễn
+              <Button variant="danger" onClick={() => run('force')} className="gap-1.5">
+                <Trash size={14} /> Xóa vĩnh viễn
               </Button>
             </div>
           </div>
@@ -435,16 +438,17 @@ export function ProductsPage() {
           <p className="text-sm text-slate-500">Quản lý danh sách món ăn trong hệ thống</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={() => setTrashOpen(true)}>
-            Sản phẩm đã xoá
+          <Button variant="secondary" onClick={() => setTrashOpen(true)} className="gap-1.5">
+            <Trash2 size={16} /> Sản phẩm đã xoá
           </Button>
           <Button
             onClick={() => {
               setEditing(null)
               setFormOpen(true)
             }}
+            className="gap-1.5"
           >
-            + Thêm sản phẩm
+            <Plus size={16} /> Thêm sản phẩm
           </Button>
         </div>
       </header>

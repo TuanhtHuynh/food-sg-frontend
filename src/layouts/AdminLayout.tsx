@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { LogOut } from 'lucide-react'
 import { useAuth } from '../auth/context'
 import { Button } from '../components/ui'
 
@@ -76,13 +77,13 @@ export function AdminLayout() {
           </p>
           <Button
             variant="secondary"
-            className="mt-3 w-full"
+            className="mt-3 w-full gap-2"
             onClick={async () => {
               await signOut()
               navigate('/login', { replace: true })
             }}
           >
-            Đăng xuất
+            <LogOut size={16} /> Đăng xuất
           </Button>
         </div>
       </aside>
@@ -92,12 +93,13 @@ export function AdminLayout() {
           <p className="font-bold text-emerald-700">Food SG</p>
           <Button
             variant="secondary"
+            className="gap-2"
             onClick={async () => {
               await signOut()
               navigate('/login', { replace: true })
             }}
           >
-            Đăng xuất
+            <LogOut size={16} /> Đăng xuất
           </Button>
         </header>
 
