@@ -63,13 +63,13 @@ export function ResourceTable<T>({
               cell: (row: T) => (
                 <div className="flex justify-end gap-2">
                   {onEdit ? (
-                  <Button variant="secondary" onClick={() => onEdit(row)} className="gap-1.5">
-                    <Pencil size={14} /> Sửa
+                  <Button variant="secondary" onClick={() => onEdit(row)} className="gap-1.5 p-1.5" aria-label="Sửa">
+                    <Pencil size={14} />
                   </Button>
                   ) : null}
                   {onDelete ? (
-                  <Button variant="danger" onClick={() => setDeleting(row)} className="gap-1.5">
-                    <Trash2 size={14} /> Xóa
+                  <Button variant="danger" onClick={() => setDeleting(row)} className="gap-1.5 p-1.5" aria-label="Xóa">
+                    <Trash2 size={14} />
                   </Button>
                   ) : null}
                 </div>

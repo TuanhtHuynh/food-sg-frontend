@@ -17,6 +17,8 @@ const adminLinks: NavItem[] = [
   { to: '/admin/sizes', label: 'Size' },
   { to: '/admin/ingredients', label: 'Nguyên liệu' },
   { to: '/admin/stores', label: 'Cửa hàng' },
+  { to: '/admin/pages', label: 'Trang nội dung' },
+  { to: '/admin/banners', label: 'Banner' },
 ]
 
 /** Mọi nhân viên (bao gồm admin) đều dùng được: chấm công, bảng giá, kho, nhân viên. */

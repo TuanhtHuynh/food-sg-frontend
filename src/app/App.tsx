@@ -18,6 +18,8 @@ import { ProductsPage } from '../pages/admin/ProductsPage'
 import { ProfilePage } from '../pages/admin/ProfilePage'
 import { StaffPage } from '../pages/admin/StaffPage'
 import { StockPage } from '../pages/admin/StockPage'
+import { PagesPage } from '../pages/admin/PagesPage'
+import { BannersPage } from '../pages/admin/BannersPage'
 import { IngredientsPage, SizesPage, StoresPage } from '../pages/admin/SimplePage'
 
 /** Chỉ nhân viên có hồ sơ + vai trò hợp lệ mới vào được trang quản trị. */
@@ -134,6 +136,22 @@ function App() {
               element={
                 <RequireAdmin>
                   <StoresPage />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="pages"
+              element={
+                <RequireAdmin>
+                  <PagesPage />
+                </RequireAdmin>
+              }
+            />
+            <Route
+              path="banners"
+              element={
+                <RequireAdmin>
+                  <BannersPage />
                 </RequireAdmin>
               }
             />

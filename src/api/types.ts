@@ -157,6 +157,16 @@ export interface DataResponse<T> {
   data: T
 }
 
+export interface Banner {
+  id: number
+  image: string
+  title?: string
+  link_url?: string
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 export interface Page {
   id: number
   title: string

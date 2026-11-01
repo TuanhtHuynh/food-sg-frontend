@@ -155,11 +155,11 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
       onClose={onClose}
       footer={
         <>
-          <Button variant="secondary" onClick={onClose} disabled={pending} className="gap-1.5">
-            <X size={16} /> Hủy
+          <Button variant="secondary" onClick={onClose} disabled={pending} className="gap-1.5 p-1.5" aria-label="Hủy">
+            <X size={16} />
           </Button>
-          <Button onClick={handleSubmit(onSubmit)} disabled={pending} className="gap-1.5">
-            <Save size={16} /> {pending ? 'Đang lưu…' : 'Lưu'}
+          <Button onClick={handleSubmit(onSubmit)} disabled={pending} className="gap-1.5 p-1.5" aria-label="Lưu">
+            <Save size={16} />
           </Button>
         </>
       }
@@ -320,23 +320,25 @@ function TrashDialog({ onClose }: { onClose: () => void }) {
       onClose={onClose}
       footer={
         <>
-          <Button variant="secondary" onClick={onClose} className="gap-1.5">
+          <Button variant="secondary" onClick={onClose} className="gap-1.5 p-1.5" aria-label="Đóng">
             Đóng
           </Button>
           <Button
             variant="danger"
             disabled={!Number.isInteger(id) || id <= 0 || restore.isPending || forceDelete.isPending}
             onClick={() => setConfirming(true)}
-            className="gap-1.5"
+            className="gap-1.5 p-1.5"
+            aria-label="Xóa vĩnh viễn"
           >
-            <Trash size={14} /> Xóa vĩnh viễn
+            <Trash size={14} />
           </Button>
           <Button
             disabled={!Number.isInteger(id) || id <= 0 || restore.isPending || forceDelete.isPending}
             onClick={() => run('restore')}
-            className="gap-1.5"
+            className="gap-1.5 p-1.5"
+            aria-label="Khôi phục"
           >
-            <RotateCcw size={14} /> Khôi phục
+            <RotateCcw size={14} />
           </Button>
         </>
       }
@@ -364,11 +366,11 @@ function TrashDialog({ onClose }: { onClose: () => void }) {
               Xóa vĩnh viễn sản phẩm #{id}? Bản ghi sẽ bị xóa cứng khỏi cơ sở dữ liệu.
             </p>
             <div className="mt-2 flex justify-end gap-2">
-              <Button variant="secondary" onClick={() => setConfirming(false)} className="gap-1.5">
-                <X size={14} /> Huỷ
+              <Button variant="secondary" onClick={() => setConfirming(false)} className="gap-1.5 p-1.5" aria-label="Huỷ">
+                <X size={14} />
               </Button>
-              <Button variant="danger" onClick={() => run('force')} className="gap-1.5">
-                <Trash size={14} /> Xóa vĩnh viễn
+              <Button variant="danger" onClick={() => run('force')} className="gap-1.5 p-1.5" aria-label="Xóa vĩnh viễn">
+                <Trash size={14} />
               </Button>
             </div>
           </div>
@@ -438,17 +440,18 @@ export function ProductsPage() {
           <p className="text-sm text-slate-500">Quản lý danh sách món ăn trong hệ thống</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={() => setTrashOpen(true)} className="gap-1.5">
-            <Trash2 size={16} /> Sản phẩm đã xoá
+          <Button variant="secondary" onClick={() => setTrashOpen(true)} className="gap-1.5 p-1.5" aria-label="Sản phẩm đã xoá">
+            <Trash2 size={16} />
           </Button>
           <Button
             onClick={() => {
               setEditing(null)
               setFormOpen(true)
             }}
-            className="gap-1.5"
+            className="gap-1.5 p-1.5"
+            aria-label="Thêm sản phẩm"
           >
-            <Plus size={16} /> Thêm sản phẩm
+            <Plus size={16} />
           </Button>
         </div>
       </header>

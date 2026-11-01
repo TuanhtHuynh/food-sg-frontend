@@ -15,7 +15,7 @@ import type {
   User,
 } from './types'
 
-export type Resource = 'products' | 'categories' | 'sizes' | 'ingredients' | 'stores'
+export type Resource = 'products' | 'categories' | 'sizes' | 'ingredients' | 'stores' | 'pages' | 'banners'
 
 export interface ListParams {
   q?: string
