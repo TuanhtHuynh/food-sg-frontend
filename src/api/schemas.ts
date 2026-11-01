@@ -63,6 +63,22 @@ export const storeSchema = z.object({
 export type StoreValues = z.infer<typeof storeSchema>
 
 /** Tồn kho — BE yêu cầu product_id + quantity (số nguyên >= 0). */
+export const pageSchema = z.object({
+  title: z.string().trim().min(1, 'Tiêu đề là bắt buộc').max(255, 'Tối đa 255 ký tự'),
+  slug: z.string().trim().max(255, 'Tối đa 255 ký tự'),
+  content: z.string().trim().max(10000, 'Tối đa 10000 ký tự'),
+})
+
+export type PageValues = z.infer<typeof pageSchema>
+
+export const bannerSchema = z.object({
+  title: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
+  link_url: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
+  sort_order: z.string().refine((value) => /^\d+$/.test(value), 'Thứ tự phải là số'),
+})
+
+export type BannerValues = z.infer<typeof bannerSchema>
+
 export const stockSchema = z.object({
   product_id: z.string().min(1, 'Vui lòng chọn sản phẩm'),
   store_id: z.string(),
