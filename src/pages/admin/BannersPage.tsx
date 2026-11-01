@@ -13,6 +13,21 @@ import { bannerSchema } from '../../api/schemas'
 import type { BannerValues } from '../../api/schemas'
 import type { Banner } from '../../api/types'
 
+/** Đáp ứng BE: image là FILE upload (jpg/jpeg/png/webp, ≤ 2MB); các field còn lại JSON. */
+function buildBannerForm(
+  values: BannerValues,
+  imageFile: File | null,
+  isUpdate: boolean,
+): FormData {
+  const form = new FormData()
+  form.append('title', values.title ?? '')
+  form.append('link_url', values.link_url ?? '')
+  form.append('sort_order', String(Number(values.sort_order || 0)))
+  if (imageFile) form.append('image', imageFile)
+  if (isUpdate) form.append('_method', 'PUT')
+  return form
+}
+
 function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () => void }) {
   const create = useCreate<Banner>('banners')
   const update = useUpdate<Banner>('banners')
@@ -35,23 +50,10 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
 
   const onSubmit = async (values: BannerValues) => {
     setError('')
-    const formData = new FormData()
-    formData.append('title', values.title ?? '')
-    formData.append('link_url', values.link_url ?? '')
-    formData.append('sort_order', String(Number(values.sort_order || 0)))
-    if (imageFile) formData.append('image', imageFile)
-
+    const formData = buildBannerForm(values, imageFile, Boolean(banner))
     try {
-      if (banner) {
-        // Banner update via JSON (image handled separately if needed by BE)
-        await update.mutateAsync({ id: banner.id, payload: {
-          title: values.title || null,
-          link_url: values.link_url || null,
-          sort_order: Number(values.sort_order || 0),
-        }})
-      } else {
-        await create.mutateAsync(formData)
-      }
+      if (banner) await update.mutateAsync({ id: banner.id, payload: formData })
+      else await create.mutateAsync(formData)
       onClose()
     } catch (err) {
       if (!mapServerErrors(err, setFieldError, ['title', 'link_url', 'sort_order'])) setError(errorMessage(err))
