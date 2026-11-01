@@ -344,7 +344,7 @@ export function useStockList(params: StockListParams = {}) {
 function useInvalidate() {
   const queryClient = useQueryClient()
   return () => {
-    queryClient.invalidateQueries({ queryKey: ['admin'] })
+    queryClient.invalidateQueries({ queryKey: ['admin'], exact: false })
     // Danh mục sản phẩm (dùng để tra tên trong module kho) cũng cần được làm mới.
     queryClient.invalidateQueries({ queryKey: ['directory'] })
   }
@@ -352,7 +352,7 @@ function useInvalidate() {
 
 function useInvalidateStock() {
   const queryClient = useQueryClient()
-  return () => queryClient.invalidateQueries({ queryKey: ['stock'] })
+  return () => queryClient.invalidateQueries({ queryKey: ['stock'], exact: false })
 }
 
 export function useCreate<T>(resource: Resource) {
