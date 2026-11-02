@@ -125,7 +125,7 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
         </label>
 
         {previewUrl ? (
-          <img src={previewUrl} alt={banner?.title ?? ''} className="h-20 w-full rounded-md border border-slate-200 object-cover" />
+          <img src={previewUrl} alt={banner?.title ?? ''} style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
         ) : null}
 
         {error ? <p className="text-sm text-rose-600">{error}</p> : null}
@@ -149,7 +149,7 @@ export function BannersPage() {
       header: 'Ảnh',
       cell: (row) => (
         row.image ? (
-          <img src={imageUrl(row.image) ?? ''} alt={row.title ?? ''} className="h-12 w-24 rounded-md border border-slate-200 object-cover" />
+          <img src={imageUrl(row.image) ?? ''} alt={row.title ?? ''} style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '8px' }} />
         ) : <span className="text-xs text-slate-400">—</span>
       ),
     },

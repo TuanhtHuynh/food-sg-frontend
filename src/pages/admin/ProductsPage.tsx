@@ -219,7 +219,7 @@ function ProductForm({ product, onClose }: { product: Product | null; onClose: (
           <img
             src={previewUrl}
             alt={product?.name ?? ''}
-            className="h-16 w-16 rounded-md border border-slate-200 object-cover"
+            style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '8px' }}
           />
         ) : null}
 

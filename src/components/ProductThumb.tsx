@@ -20,7 +20,8 @@ export function ProductThumb({ image, name, className = '' }: ProductThumbProps)
           alt={name}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover"
+          style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }}
+          className="h-full w-full"
         />
       ) : null}
     </span>
