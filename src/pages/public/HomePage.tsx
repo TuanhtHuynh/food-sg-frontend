@@ -54,7 +54,7 @@ export function HomePage() {
         <section className="w-full">
           <div className="relative overflow-hidden shadow-lg h-[16rem] md:h-[28rem] lg:h-[32rem]">
             <a href={String(bannerList[bannerIndex]?.link_url ?? '#')} className="block h-full w-full">
-              <img key={bannerIndex} src={imageUrl(bannerList[bannerIndex]?.image) ?? undefined} alt={String(bannerList[bannerIndex]?.title ?? 'Banner')} style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '8px' }} className="transition-opacity duration-700 ease-in-out" />
+              <img key={bannerIndex} src={imageUrl(bannerList[bannerIndex]?.image) ?? undefined} alt={String(bannerList[bannerIndex]?.title ?? 'Banner')} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} className="transition-opacity duration-700 ease-in-out" />
             </a>
             <div className="absolute bottom-4 left-4 flex gap-2">
               {bannerList.map((_, idx: number) => (
