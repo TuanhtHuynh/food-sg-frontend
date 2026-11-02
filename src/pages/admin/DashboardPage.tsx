@@ -20,11 +20,11 @@ export function DashboardPage() {
   const stores = useList('stores', { page: 1 })
 
   const totals = {
-    products: products.data?.meta.total ?? 0,
-    categories: categories.data?.meta.total ?? 0,
-    sizes: sizes.data?.meta.total ?? 0,
-    ingredients: ingredients.data?.meta.total ?? 0,
-    stores: stores.data?.meta.total ?? 0,
+    products: products.data?.meta?.total ?? 0,
+    categories: categories.data?.meta?.total ?? 0,
+    sizes: sizes.data?.meta?.total ?? 0,
+    ingredients: ingredients.data?.meta?.total ?? 0,
+    stores: stores.data?.meta?.total ?? 0,
   }
 
   return (

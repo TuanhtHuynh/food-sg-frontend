@@ -165,7 +165,7 @@ export function SimplePage({ config }: { config: Config }) {
       <ResourceTable
         rows={rows}
         columns={columns}
-        rowCount={query.data?.meta.total ?? 0}
+        rowCount={query.data?.meta?.total ?? 0}
         page={page}
         onPageChange={setPage}
         loading={query.isLoading}

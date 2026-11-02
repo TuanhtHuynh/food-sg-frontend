@@ -124,9 +124,9 @@ export function HomePage() {
           </div>
         )}
 
-        {products.data && products.data.meta.total > 0 ? (
+        {products.data && products.data.meta?.total > 0 ? (
           <p className="mt-6 text-center text-sm text-slate-500">
-            Tổng {products.data.meta.total} món · xem theo danh mục ở thanh{" "}
+            Tổng {products.data.meta?.total} món · xem theo danh mục ở thanh{" "}
             <span className="font-medium text-emerald-700">Danh mục</span> phía trên.
           </p>
         ) : null}
