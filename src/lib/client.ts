@@ -1,7 +1,7 @@
 import type { FieldPath, FieldValues, UseFormSetError } from 'react-hook-form'
 
 const API_URL = (import.meta.env.VITE_API_URL ?? '/api').replace(/\/+$/, '')
-const STORAGE_HOST = (import.meta.env.VITE_STORAGE_HOST ?? 'http://localhost:8000').replace(/\/+$/, '')
+
 
 export class ApiError extends Error {
   status: number
@@ -154,11 +154,11 @@ export function toIso(value: string) {
   return Number.isNaN(date.getTime()) ? null : date.toISOString()
 }
 
-/** Đường dẫn ảnh từ BE (`/storage/…`) -> URL đầy đủ; URL tuyệt đối giữ nguyên. */
+/** Đường dẫn ảnh từ BE (`/storage/…` hoặc ImgBB tuyệt đối) -> giữ nguyên; URL tuyệt đối giữ nguyên. */
 export function imageUrl(image: string | null | undefined) {
   if (!image) return null
   if (/^https?:\/\//i.test(image)) return image
   // BE đôi khi trả /storage//storage/… (duplicate); trim + normalize
   const clean = image.replace(/\/storage\/+/g, '/storage/').replace(/\/+/g, '/')
-  return `${STORAGE_HOST}${clean.startsWith('/') ? '' : '/'}${clean}`
+  return clean
 }
