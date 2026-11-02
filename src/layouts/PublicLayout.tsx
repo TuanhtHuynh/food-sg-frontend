@@ -64,8 +64,8 @@ export function PublicLayout() {
 
           <Link to="/pages/gioi-thieu" className="my-3 hidden items-center text-sm text-slate-600 hover:text-emerald-700 sm:inline-flex">Chúng tôi</Link>
 
-          <Link to="/login" className="my-3 flex shrink-0 items-center">
-            <Button variant="secondary">Đăng nhập</Button>
+          <Link to="/login" className="my-2 flex shrink-0 items-center sm:my-3">
+            <Button variant="secondary" className="px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm">Đăng nhập</Button>
           </Link>
         </div>
       </header>

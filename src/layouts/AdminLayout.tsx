@@ -85,7 +85,7 @@ export function AdminLayout() {
               navigate('/login', { replace: true })
             }}
           >
-            <LogOut size={16} /> Đăng xuất
+            <LogOut size={16} /> Đăng xuất · {user?.name ?? ''}
           </Button>
         </div>
       </aside>
@@ -101,7 +101,7 @@ export function AdminLayout() {
               navigate('/login', { replace: true })
             }}
           >
-            <LogOut size={16} /> Đăng xuất
+            <LogOut size={16} /> Đăng xuất · {user?.name ?? ''}
           </Button>
         </header>
 

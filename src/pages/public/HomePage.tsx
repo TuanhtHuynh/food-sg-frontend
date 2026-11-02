@@ -52,7 +52,7 @@ export function HomePage() {
     <div>
       {bannerList.length > 0 ? (
         <section className="w-full">
-          <div className="relative overflow-hidden shadow-lg h-[28rem] md:h-[32rem]">
+          <div className="relative overflow-hidden shadow-lg h-[16rem] md:h-[28rem] lg:h-[32rem]">
             <a href={String(bannerList[bannerIndex]?.link_url ?? '#')} className="block h-full w-full">
               <img key={bannerIndex} src={imageUrl(bannerList[bannerIndex]?.image) ?? undefined} alt={String(bannerList[bannerIndex]?.title ?? 'Banner')} className="h-full w-full object-cover transition-opacity duration-700 ease-in-out" />
             </a>

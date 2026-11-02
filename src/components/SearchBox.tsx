@@ -34,7 +34,7 @@ export function SearchBox() {
     (search.data?.products.length ?? 0) > 0 || (search.data?.categories.length ?? 0) > 0
 
   return (
-    <div ref={boxRef} className="relative w-full max-w-md">
+    <div ref={boxRef} className="relative w-full max-w-[70vw] sm:max-w-md">
       <input
         value={text}
         onChange={(event) => {
@@ -43,11 +43,11 @@ export function SearchBox() {
         }}
         onFocus={() => setOpen(true)}
         placeholder="Tìm món ăn…"
-        className="w-full rounded-full border border-slate-300 bg-white px-4 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+        className="w-full rounded-full border border-slate-300 bg-white px-4 py-2.5 text-base sm:py-2 sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
       />
 
       {open && keyword.length >= 2 ? (
-        <div className="absolute left-0 z-50 mt-2 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+        <div className="absolute left-0 z-50 mt-2 w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl sm:w-full sm:max-w-md">
           {search.isFetching ? (
             <p className="px-4 py-3 text-sm text-slate-400">Đang tìm…</p>
           ) : search.isError ? (
