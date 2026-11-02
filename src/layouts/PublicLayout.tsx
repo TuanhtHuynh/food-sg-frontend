@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useCategories, useProductDirectory } from '../api/queries'
+import { useAuth } from '../auth/context'
 import { MegaMenu } from '../components/MegaMenu'
 import { SearchBox } from '../components/SearchBox'
 import { Button } from '../components/ui'
@@ -37,6 +38,8 @@ export function PublicLayout() {
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
   }, [location.pathname])
 
+  const { user } = useAuth()
+
   return (
     <div className="min-h-svh bg-slate-50 text-slate-800">
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -64,9 +67,15 @@ export function PublicLayout() {
 
           <Link to="/pages/gioi-thieu" className="my-3 hidden items-center text-sm text-slate-600 hover:text-emerald-700 sm:inline-flex">Chúng tôi</Link>
 
-          <Link to="/login" className="my-2 flex shrink-0 items-center sm:my-3">
-            <Button variant="secondary" className="px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm">Đăng nhập</Button>
-          </Link>
+          {user ? (
+            <div className="my-2 flex shrink-0 items-center gap-2 text-sm font-medium text-slate-700 sm:my-3">
+              <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">{user?.name}</span>
+            </div>
+          ) : (
+            <Link to="/login" className="my-2 flex shrink-0 items-center sm:my-3">
+              <Button variant="secondary" className="px-2 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm">Đăng nhập</Button>
+            </Link>
+          )}
         </div>
       </header>
 
