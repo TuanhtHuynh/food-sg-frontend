@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Plus, Save, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
@@ -61,7 +62,7 @@ function BannerForm({
     setError: setFieldError,
     watch: watchForm,
     formState: { errors, isSubmitting },
-  } = useForm<BannerValues>({
+  } = useForm<z.infer<typeof bannerSchema>, undefined, BannerValues>({
     resolver: zodResolver(bannerSchema),
     defaultValues: {
       title: banner?.title ?? "",
