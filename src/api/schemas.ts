@@ -75,7 +75,7 @@ export type PageValues = z.infer<typeof pageSchema>
 export const bannerSchema = z.object({
   title: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
   link_url: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
-  sort_order: z.coerce.number().min(1, 'Vui lòng chọn vị trí'),
+  sort_order: z.number().min(1, 'Vui lòng chọn vị trí'),
   image: z.custom<File | null>().nullable().optional(),
 });
 

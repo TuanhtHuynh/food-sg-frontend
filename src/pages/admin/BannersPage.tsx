@@ -164,7 +164,7 @@ function BannerForm({
             Thứ tự (sort_order)
           </span>
           <select
-            {...register("sort_order")}
+            {...register("sort_order", { valueAsNumber: true })}
             className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-500"
           >
             <option value={0}>0</option>
