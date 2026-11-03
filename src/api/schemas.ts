@@ -25,7 +25,7 @@ export const productSchema = z
     meta_title: z.string().trim().max(255, 'Tối đa 255 ký tự'),
     meta_description: z.string().trim().max(1000, 'Tối đa 1000 ký tự'),
     meta_keyword: z.string().trim().max(255, 'Tối đa 255 ký tự'),
-    image: z.any().optional(),
+  image: z.custom<File | null>(() => true).optional(),
   })
   .refine(
     (values) =>
@@ -75,7 +75,7 @@ export type PageValues = z.infer<typeof pageSchema>
 export const bannerSchema = z.object({
   title: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
   link_url: z.string().trim().max(255, 'Tối đa 255 ký tự').optional().nullable(),
-  sort_order: z.preprocess((val) => (val === "" || val === undefined ? 1 : Number(val)), z.number()),
+  sort_order: z.coerce.number().min(1, 'Vui lòng chọn vị trí'),
   image: z.any().optional(),
 })
 

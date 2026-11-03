@@ -61,7 +61,7 @@ function BannerForm({
     setError: setFieldError,
     watch: watchForm,
     formState: { errors, isSubmitting },
-  } = useForm<BannerValues>({
+  } = useForm<z.infer<typeof bannerSchema>, undefined, BannerValues>({
     resolver: zodResolver(bannerSchema),
     defaultValues: {
       title: banner?.title ?? "",
