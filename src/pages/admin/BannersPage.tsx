@@ -29,7 +29,7 @@ function buildBannerForm(
   return form
 }
 
-function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () => void }) {
+function BannerForm({ banner, onClose, existingBanners = [] }: { banner: Banner | null; onClose: () => void; existingBanners?: Banner[] }) {
   const create = useCreate<Banner>('banners')
   const update = useUpdate<Banner>('banners')
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -47,7 +47,7 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
     defaultValues: {
       title: banner?.title ?? '',
       link_url: banner?.link_url ?? '',
-      sort_order: banner ? String(banner.sort_order) : '0',
+      sort_order: banner ? Number(banner.sort_order) : 0,
     },
   })
 
@@ -105,7 +105,21 @@ function BannerForm({ banner, onClose }: { banner: Banner | null; onClose: () =>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField register={register} name="title" label="Tiêu đề" error={errors.title?.message} />
         <TextField register={register} name="link_url" label="Link đích" placeholder="https://..." error={errors.link_url?.message} />
-        <TextField register={register} name="sort_order" label="Thứ tự" type="number" placeholder="0" error={errors.sort_order?.message} />
+        <label className="flex flex-col gap-1">
+          <span className="text-sm font-medium text-slate-700">Thứ tự (sort_order)</span>
+          <select
+            {...register('sort_order')}
+            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-emerald-500"
+          >
+            <option value={0}>0</option>
+            {existingBanners.map((b) => (
+              <option key={b.sort_order} value={Number(b.sort_order)}>
+                {b.sort_order}
+              </option>
+            ))}
+          </select>
+          {errors.sort_order?.message ? <span className="text-xs text-rose-600">{errors.sort_order.message}</span> : null}
+        </label>
 
         <label className="flex flex-col gap-1">
           <span className="text-sm font-medium text-slate-700">Ảnh banner (jpg/png/webp, ≤ 2MB)</span>
@@ -190,7 +204,7 @@ export function BannersPage() {
         emptyText="Không có banner nào"
       />
 
-      {formOpen ? <BannerForm key={editing?.id ?? 'new'} banner={editing} onClose={() => setFormOpen(false)} /> : null}
+      {formOpen ? <BannerForm key={editing?.id ?? 'new'} banner={editing} onClose={() => setFormOpen(false)} existingBanners={rows} /> : null}
     </div>
   )
 }
