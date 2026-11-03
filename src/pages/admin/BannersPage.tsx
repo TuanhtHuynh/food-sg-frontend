@@ -80,7 +80,9 @@ function BannerForm({
     setPreviewUrl(banner?.image ? imageUrl(banner.image) : null);
   }, [watchedImage, banner]);
 
-  const onSubmit = async (values: BannerValues) => {
+  const onSubmit: SubmitHandler<BannerValues> = async (
+    values: BannerValues,
+  ) => {
     setError("");
     const hasImage = Boolean(imageFile);
     const formData = buildBannerForm(values, imageFile, Boolean(banner));
